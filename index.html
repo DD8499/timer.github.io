@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>Stopwatch</title>
+    <style>*{
+        font-family: 'Open Sans', sans-serif;
+      
+    
+    }
+    body{
+        background: url(./stopwatch.png);
+    }
+    h1{
+        text-align: center;
+        font-size: 50px;
+        color: #dc143c;
+    }
+    
+    .stopwatch{
+        font-size: 100px;
+        text-align: center;
+        color: black;
+        background-color: ghostwhite;
+    }
+    .controls{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    
+    .btn{
+        background: #3cff00;
+        color: #030303;
+        font-size: 20px;
+        padding: 10px 30px;
+        font-weight: 500;
+        margin: 20px 10px 0 0;
+        border-radius: 30px;
+        text-decoration: none;
+        border: 2px solid #000000;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+    }
+    .btn:hover{
+        color: rgb(220, 20, 137);
+        box-shadow: 7px 7px 20px 0px  rgba(0,0,0,0.3), 40px 40px 10px -40px  rgba(0,0,0,0.8) inset;
+
+        
+    }
+    
+    .laps{
+        font-size: 40px;
+    }
+    .lap-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }</style>
+<body>
+    <h1>Timer</h1>
+    <div class="stopwatch">00:00:00</div>
+
+    <div class="controls">
+        <button onclick="start()" class="btn">Start</button>
+        <button onclick="pause()" class="btn">Pause</button>
+        <button onclick="stop()" class="btn">Stop</button>
+        <button onclick="lap()" class="btn">Lap</button>
+        <button class="btn" id="reset">Reset</button>
+    </div>
+    <div class="lap-container">
+        <ul class="laps" ></ul>
+    </div>
+
+
+    <script>
+        let milisec = 0, sec = 0, minute = 0;
+		let timer;
+
+		let stopwatchEl = document.querySelector('.stopwatch');
+		let lapsContainer = document.querySelector('.laps');
+
+		function start() {
+			if(!timer) {
+				timer = setInterval(run, 10);
+			}
+		}
+
+		function run() {
+			stopwatchEl.textContent = getTimer();
+			milisec++;
+			if(milisec == 100) {
+				milisec = 0;
+				sec++;
+			}
+			if(sec == 60) {
+				sec = 0;
+				minute++;
+			}
+		}
+
+		function pause() {
+			stopTimer();
+		}
+
+		function stop() {
+			stopTimer();
+			milisec = 0;
+			sec = 0;
+			minute = 0;
+			stopwatchEl.textContent = getTimer();
+		}
+
+		function stopTimer() {
+			clearInterval(timer);
+			timer = false;
+		}
+
+		function getTimer() {
+			return (minute < 10 ? "0" + minute : minute) + ":" + (sec < 10 ? "0" + sec : sec) + ":" + (milisec < 10 ? "0" + milisec : milisec);
+		}
+
+
+		function lap() {
+			if(timer) {
+				var li = document.createElement('li');
+				li.innerText = getTimer();
+				lapsContainer.appendChild(li);
+			}
+		}
+
+        let reset = document.getElementById('reset')
+        reset.addEventListener('click', ()=>{
+            location.reload();
+        })
+    </script>
+</body>
+
+</html>
